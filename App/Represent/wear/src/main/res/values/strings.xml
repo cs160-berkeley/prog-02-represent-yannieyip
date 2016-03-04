@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">REPRESENT!</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+
+    <string name="vote">2012 Presidential Vote</string>
+
+    <string name="rep1_name">Barbara Boxer</string>
+    <string name="rep1_party">Democratic Senate</string>
+
+    <string name="rep2_name">Dianne Feinstein</string>
+    <string name="rep2_party">Democratic House</string>
+
+    <string name="rep3_name">Barbara Lee</string>
+    <string name="rep3_party">Democratic House</string>
+
+    <string name="rep4_name">Other District Rep 1</string>
+    <string name="rep4_party">Republican Senate</string>
+
+    <string name="rep5_name">Other District Rep 2</string>
+    <string name="rep5_party">Republican House</string>
+
+    <string name="rep6_name">Other District Rep 1</string>
+    <string name="rep6_party">Democratic House</string>
+
+    <string name="vote_result1">Alameda County California Obama: 85% Romney: 15%</string>
+    <string name="vote_result2">Other County Other State Obama: 68% Romney: 32%</string>
+
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2012 Presidential Vote"
+        android:id="@+id/voteLabel"
+        android:layout_marginTop="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other County"
+        android:id="@+id/county"
+        android:layout_below="@+id/voteLabel"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other State"
+        android:id="@+id/state"
+        android:layout_below="@+id/county"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Obama: 65%"
+        android:id="@+id/obama"
+        android:layout_below="@+id/state"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Romney: 35%"
+        android:id="@+id/romney"
+        android:layout_below="@+id/obama"
+        android:layout_alignStart="@+id/obama" />
+
+</RelativeLayout>

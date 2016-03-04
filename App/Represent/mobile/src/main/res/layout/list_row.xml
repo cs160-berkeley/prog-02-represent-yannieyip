@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="7dp"
+    android:paddingRight="10dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="14dp"
+    tools:context="com.cs160.joleary.represent.ListRow">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="88dp"
+        android:id="@+id/picture"
+        android:src="#9ea09f"
+        android:layout_alignTop="@+id/name"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="20sp"
+        android:id="@+id/name"
+        android:paddingLeft="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/picture" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Party"
+        android:textSize="17sp"
+        android:id="@+id/party"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/picture"
+        android:layout_below="@+id/name"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="15sp"
+        android:id="@+id/email"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/picture"
+        android:layout_below="@+id/party"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Website"
+        android:textSize="15sp"
+        android:id="@+id/website"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/picture"
+        android:layout_below="@+id/email"/>
+
+    <TextView
+        android:layout_width="400sp"
+        android:layout_height="wrap_content"
+        android:text="Tweet"
+        android:textSize="12sp"
+        android:id="@+id/tweet"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:layout_toRightOf="@+id/tweetIcon"
+        android:layout_below="@+id/picture"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/tweetIcon"
+        android:src="@drawable/tweet_icon"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/picture"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View More"
+        android:textSize="10sp"
+        android:id="@+id/viewMore"
+        android:layout_above="@+id/email"
+        android:layout_toEndOf="@id/party" />
+
+</RelativeLayout>
