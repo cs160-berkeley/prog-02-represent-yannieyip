@@ -6,6 +6,7 @@ import android.location.Criteria;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.wearable.Wearable;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -30,11 +32,18 @@ import android.util.Log;
 import java.lang.String;
 import android.support.v4.content.ContextCompat;
 import android.content.pm.PackageManager;
+import java.util.ArrayList;
+import org.json.JSONArray;
 
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+//    private static final String TWITTER_KEY = "j4VhUVhRTbuLAmz42rvQbtuBg";
+//    private static final String TWITTER_SECRET = "rX8rHJuEwbK2ikSx9Uhaaj9XYb0zdlCVz7mHSwGCO0B4sbRkda";
+
     //there's not much interesting happening. when the buttons are pressed, they start
     //the PhoneToWatchService with the cat name passed in.
 
@@ -43,36 +52,34 @@ public class MainActivity extends Activity implements
     private GoogleApiClient mGoogleApiClient;
     private String API_KEY = "40762425261540849256549d0ea423ba";
     private String host = "http://congress.api.sunlightfoundation.com";
-    String charset = "UTF-8";
     String method;
     String lat;
     String lon;
     String apikey;
     String url;
+    ArrayList<Representative> reps = new ArrayList<Representative>();
+//    ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+//        Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
         addListenerOnButton();
-        // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addApi(Wearable.API)  // used for data layer API
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(AppIndex.API).build();
-//        location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         // Getting LocationManager object from System Service LOCATION_SERVICE
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
         // Creating a criteria object to retrieve provider
         Criteria criteria = new Criteria();
-
         // Getting the name of the best provider
         String provider = locationManager.getBestProvider(criteria, true);
-
         // Getting Current Location
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
         || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -83,7 +90,6 @@ public class MainActivity extends Activity implements
                 //Sets global vars lat and lon
                 onLocationChanged(location);
             }
-
             locationManager.requestLocationUpdates(provider, 200000, 0, this);
 
         }
@@ -128,7 +134,6 @@ public class MainActivity extends Activity implements
 
                 Intent sendIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
                 sendIntent.putExtra("CAT_NAME", "Fred");
-//                sendIntent.putExtra("NAMES", names);
                 startService(sendIntent);
             }
         });
@@ -142,7 +147,6 @@ public class MainActivity extends Activity implements
 
                 Intent sendIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
                 sendIntent.putExtra("CAT_NAME", "Lexy");
-//              sendIntent.putExtra("NAMES", names);
                 startService(sendIntent);
             }
         });
@@ -201,10 +205,10 @@ public class MainActivity extends Activity implements
         apikey = "&apikey=" + API_KEY;
         url = host + method + str_lat + str_lon + apikey;
         Log.d("url", url);
-        sendGet();
+        getBasicInfo();
     }
 
-    private void sendGet() {
+    private void getBasicInfo() {
         Ion.with(getBaseContext())
                 .load(url)
                 .asJsonObject()
@@ -212,11 +216,60 @@ public class MainActivity extends Activity implements
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         // do stuff with the result or error
+
                         Log.d("msg", "WORKING");
-                        Log.d("result", result.toString());
+                        JsonArray results = result.getAsJsonArray("results");
+                        int len = results.size();
+
+                        for (int i = 0; i < len; i++) {
+                            String id = results.get(i).getAsJsonObject().get("bioguide_id").toString();
+                            id = id.replaceAll("^\"|\"$", "");
+                            Log.d("IIIDDDD", id);
+                            String first_name = results.get(i).getAsJsonObject().get("first_name").toString();
+                            String last_name = results.get(i).getAsJsonObject().get("last_name").toString();
+                            String party = results.get(i).getAsJsonObject().get("party").toString();
+                            String chamber = results.get(i).getAsJsonObject().get("chamber").toString();
+                            String email = results.get(i).getAsJsonObject().get("oc_email").toString();
+                            String website = results.get(i).getAsJsonObject().get("website").toString();
+                            String pic_url = "https://theunitedstates.io/images/congress/225x275/" + id + ".jpg";
+                            Log.d("PIC_URL", pic_url);
+
+                            Representative rep = new Representative(first_name, last_name, party, chamber, email, website, pic_url);
+                            reps.add(i, rep);
+                        }
                     }
                 });
+        getDetailInfo();
     }
+
+    public void getDetailInfo() {
+        Log.d("detail info", "GET COMMITTEES AND BILLS");
+//        getTweet();
+    }
+
+//    public void getTweet() {
+//        TwitterSession session = Twitter.getSessionManager().getActiveSession();
+//        TwitterCore.getInstance().getApiClient(session).getStatusesService().userTimeline(
+//                null,"RepBarbaraLee", 1, null, null, null, null, null, null,
+//                new Callback<List<Tweet>>() {
+//
+//                    @Override
+//                    public void success(Result<List<Tweet>> result) {
+//                        Log.d("success", "SUCCESS");
+////                        User user = userResult.data;
+////                        String imageUrl = user.profileImageUrl;
+//                        for (Tweet t : result.data) {
+//                            tweets.add(t);
+//                            Log.d("tweeeeet", "TWEET IS" + t.text);
+//                        }
+//                    }
+//                    @Override
+//                    public void failure(TwitterException exception) {
+//                        Log.d("failure", "TWEET FAILURE");
+//                    }
+//                });
+//
+//    }
 
     @Override
     public void onStart() {
