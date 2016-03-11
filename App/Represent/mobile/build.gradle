@@ -23,4 +23,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
     compile 'com.google.android.gms:play-services:8.1.0'
+    repositories {
+        mavenCentral()
+    }
+    compile 'com.google.maps:google-maps-services:0.1.7'
+    compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+
 }

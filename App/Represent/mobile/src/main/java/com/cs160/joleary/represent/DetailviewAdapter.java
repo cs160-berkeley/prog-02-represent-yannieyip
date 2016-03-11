@@ -79,7 +79,7 @@ public class DetailviewAdapter extends ArrayAdapter<String> {
 
     @Override
     public int getCount(){
-        return 1;
+        return names.length;
     }
 
 }

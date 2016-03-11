@@ -8,24 +8,21 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
 import android.support.wearable.view.GridViewPager;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    //    private TextView mTextView;
-//    private Button mFeedBtn;
-    private ImageButton ellipses;
+    private TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Resources res = getResources();
-
+//        final Resources res = getResources();
         final GridViewPager pager = (GridViewPager) findViewById(R.id.pager);
-//        pager.setAdapter(new GridPagerAdapter(this, getFragmentManager()));
-
+        pager.setAdapter(new GridPagerAdapter(this, getFragmentManager()));
+//        addListenerOnButton();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -34,17 +31,6 @@ public class MainActivity extends Activity {
             String catName = extras.getString("CAT_NAME");
             Log.d("In wear listener", "GOT CATNAME:" + catName);
         }
-
-//        mFeedBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
-//                startService(sendIntent);
-//            }
-//        });
-
-
-
         pager.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
@@ -64,11 +50,29 @@ public class MainActivity extends Activity {
                 return insets;
             }
         });
-
-        pager.setAdapter(new GridPagerAdapter(this, getFragmentManager()));
-
     }
 }
+
+//    public void addListenerOnButton() {
+//        final Context context = this;
+//
+//    }
+//}
+//
+//        View view = new View(this);
+//        name = (TextView) view.findViewById(R.id.name);
+//
+//        name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View arg0) {
+//
+//                Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
+////                sendIntent.putExtra("CAT_NAME", "Fred");
+////                Log.d("In wear listener", "GOT CATNAME:" + catName);
+//                startService(sendIntent);
+//            }
+//        });
+
 //      mFeedBtn = (Button) findViewById(R.id.feed_btn);
 
 //        Intent intent = getIntent();

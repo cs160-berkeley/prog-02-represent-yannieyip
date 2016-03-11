@@ -28,7 +28,7 @@ public class WatchToPhoneService extends Service implements GoogleApiClient.Conn
         super.onCreate();
         //initialize the googleAPIClient for message passing
         mWatchApiClient = new GoogleApiClient.Builder( this )
-                .addApi( Wearable.API )
+                .addApiIfAvailable( Wearable.API )
                 .addConnectionCallbacks(this)
                 .build();
         //and actually connect it
@@ -50,6 +50,7 @@ public class WatchToPhoneService extends Service implements GoogleApiClient.Conn
     @Override //alternate method to connecting: no longer create this in a new thread, but as a callback
     public void onConnected(Bundle bundle) {
         Log.d("T", "in onconnected");
+        final Service service = this;
         Wearable.NodeApi.getConnectedNodes(mWatchApiClient)
                 .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
                     @Override
@@ -60,15 +61,22 @@ public class WatchToPhoneService extends Service implements GoogleApiClient.Conn
                         //finally, we can send a message
                         sendMessage("/send_toast", "Good job!");
                         Log.d("T", "sent");
+
                     }
+
+
                 });
+
+        service.stopSelf();
     }
 
     @Override //we need this to implement GoogleApiClient.ConnectionsCallback
     public void onConnectionSuspended(int i) {}
 
     private void sendMessage(final String path, final String text ) {
+        Log.d("nodes", String.valueOf(nodes));
         for (Node node : nodes) {
+            Log.d("sending", "completely sent");
             Wearable.MessageApi.sendMessage(
                     mWatchApiClient, node.getId(), path, text.getBytes());
         }

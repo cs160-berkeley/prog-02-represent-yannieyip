@@ -3,7 +3,8 @@
     package="com.cs160.joleary.represent" >
 
     <uses-feature android:name="android.hardware.type.watch" />
-
+    <uses-permission
+        android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,7 +27,9 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCZ8o1SqI0HYu1wMqpaIn0QwqJX8O70UB0"/>
     </application>
 
 </manifest>
