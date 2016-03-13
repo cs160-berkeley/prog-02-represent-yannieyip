@@ -6,11 +6,9 @@ import android.location.Criteria;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.content.Context;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.View.OnClickListener;
@@ -21,10 +19,16 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.wearable.Wearable;
+import com.google.android.gms.wearable.DataMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.common.api.PendingResult;
+import android.service.carrier.CarrierMessagingService.ResultCallback;
 
 import android.location.Location;
 import android.location.LocationManager;
@@ -33,16 +37,11 @@ import java.lang.String;
 import android.support.v4.content.ContextCompat;
 import android.content.pm.PackageManager;
 import java.util.ArrayList;
-import org.json.JSONArray;
 
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-//    private static final String TWITTER_KEY = "j4VhUVhRTbuLAmz42rvQbtuBg";
-//    private static final String TWITTER_SECRET = "rX8rHJuEwbK2ikSx9Uhaaj9XYb0zdlCVz7mHSwGCO0B4sbRkda";
 
     //there's not much interesting happening. when the buttons are pressed, they start
     //the PhoneToWatchService with the cat name passed in.
@@ -52,19 +51,23 @@ public class MainActivity extends Activity implements
     private GoogleApiClient mGoogleApiClient;
     private String API_KEY = "40762425261540849256549d0ea423ba";
     private String host = "http://congress.api.sunlightfoundation.com";
-    String method;
     String lat;
     String lon;
     String apikey;
-    String url;
-    ArrayList<Representative> reps = new ArrayList<Representative>();
-//    ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+    String basicUrl;
+    ArrayList<String> ids = new ArrayList<String>();
+    ArrayList<String> first_names = new ArrayList<String>();
+    ArrayList<String> last_names = new ArrayList<String>();
+    ArrayList<String> parties = new ArrayList<String>();
+    ArrayList<String> chambers = new ArrayList<String>();
+    ArrayList<String> emails = new ArrayList<String>();
+    ArrayList<String> websites = new ArrayList<String>();
+    ArrayList<String> term_ends = new ArrayList<String>();
+    ArrayList<String> pic_urls = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-//        Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
         addListenerOnButton();
 
@@ -83,15 +86,12 @@ public class MainActivity extends Activity implements
         // Getting Current Location
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
         || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
             Location location = locationManager.getLastKnownLocation(provider);
-
             if(location!=null){
                 //Sets global vars lat and lon
                 onLocationChanged(location);
             }
             locationManager.requestLocationUpdates(provider, 200000, 0, this);
-
         }
     }
 
@@ -121,7 +121,6 @@ public class MainActivity extends Activity implements
     }
 
     public void addListenerOnButton() {
-        final Context context = this;
         currLocButton = (Button) findViewById(R.id.currrentLocation);
         zipCodeButton = (ImageButton) findViewById(R.id.check);
 
@@ -129,12 +128,6 @@ public class MainActivity extends Activity implements
             @Override
             public void onClick(View arg0) {
                 getLegislators();
-                Intent intent = new Intent(context, Overview.class);
-                startActivity(intent);
-
-                Intent sendIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
-                sendIntent.putExtra("CAT_NAME", "Fred");
-                startService(sendIntent);
             }
         });
 
@@ -142,12 +135,6 @@ public class MainActivity extends Activity implements
             @Override
             public void onClick(View arg0) {
                 getLegislators();
-                Intent intent = new Intent(context, Overview.class);
-                startActivity(intent);
-
-                Intent sendIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
-                sendIntent.putExtra("CAT_NAME", "Lexy");
-                startService(sendIntent);
             }
         });
     }
@@ -166,6 +153,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onConnected(Bundle bundle) {
+
     }
 
     @Override
@@ -199,77 +187,71 @@ public class MainActivity extends Activity implements
     }
 
     public void getLegislators() {
-        method = "/legislators/locate?";
-        String str_lat = "latitude=" + lat;
-        String str_lon = "&longitude=" + lon;
-        apikey = "&apikey=" + API_KEY;
-        url = host + method + str_lat + str_lon + apikey;
-        Log.d("url", url);
         getBasicInfo();
     }
 
     private void getBasicInfo() {
+        String method = "/legislators/locate?";
+        String str_lat = "latitude=" + lat;
+        String str_lon = "&longitude=" + lon;
+        apikey = "&apikey=" + API_KEY;
+        basicUrl = host + method + str_lat + str_lon + apikey;
+
         Ion.with(getBaseContext())
-                .load(url)
+                .load(basicUrl)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         // do stuff with the result or error
-
-                        Log.d("msg", "WORKING");
+                        Log.d("msg", "BASIC INFO WORKING");
                         JsonArray results = result.getAsJsonArray("results");
                         int len = results.size();
 
                         for (int i = 0; i < len; i++) {
                             String id = results.get(i).getAsJsonObject().get("bioguide_id").toString();
                             id = id.replaceAll("^\"|\"$", "");
-                            Log.d("IIIDDDD", id);
+                            ids.add(id);
                             String first_name = results.get(i).getAsJsonObject().get("first_name").toString();
+                            first_names.add(first_name);
                             String last_name = results.get(i).getAsJsonObject().get("last_name").toString();
+                            last_names.add(last_name);
                             String party = results.get(i).getAsJsonObject().get("party").toString();
+                            parties.add(party);
                             String chamber = results.get(i).getAsJsonObject().get("chamber").toString();
+                            chambers.add(chamber);
                             String email = results.get(i).getAsJsonObject().get("oc_email").toString();
+                            emails.add(email);
                             String website = results.get(i).getAsJsonObject().get("website").toString();
+                            websites.add(website);
+                            String term_end = results.get(i).getAsJsonObject().get("term_end").toString();
+                            term_ends.add(term_end);
                             String pic_url = "https://theunitedstates.io/images/congress/225x275/" + id + ".jpg";
-                            Log.d("PIC_URL", pic_url);
+                            pic_urls.add(pic_url);
 
-                            Representative rep = new Representative(first_name, last_name, party, chamber, email, website, pic_url);
-                            reps.add(i, rep);
                         }
+                        Intent intent = new Intent(getBaseContext(), Overview.class);
+                        intent.putExtra("IDS", ids);
+                        intent.putExtra("FIRST_NAMES", first_names);
+                        intent.putExtra("LAST_NAMES", last_names);
+                        intent.putExtra("PARTIES", parties);
+                        intent.putExtra("CHAMBERS", chambers);
+                        intent.putExtra("EMAILS", emails);
+                        intent.putExtra("WEBSITES", websites);
+                        intent.putExtra("TERM_ENDS", term_ends);
+                        intent.putExtra("PIC_URLS", pic_urls);
+                        startActivity(intent);
+
+                        Intent sendIntent = new Intent(getBaseContext(), PhoneToWatchService.class);
+                        sendIntent.putExtra("IDS", ids);
+                        sendIntent.putExtra("FIRST_NAMES", first_names);
+                        sendIntent.putExtra("LAST_NAMES", last_names);
+                        sendIntent.putExtra("PARTIES", parties);
+                        sendIntent.putExtra("CHAMBERS", chambers);
+                        startService(sendIntent);
                     }
                 });
-        getDetailInfo();
     }
-
-    public void getDetailInfo() {
-        Log.d("detail info", "GET COMMITTEES AND BILLS");
-//        getTweet();
-    }
-
-//    public void getTweet() {
-//        TwitterSession session = Twitter.getSessionManager().getActiveSession();
-//        TwitterCore.getInstance().getApiClient(session).getStatusesService().userTimeline(
-//                null,"RepBarbaraLee", 1, null, null, null, null, null, null,
-//                new Callback<List<Tweet>>() {
-//
-//                    @Override
-//                    public void success(Result<List<Tweet>> result) {
-//                        Log.d("success", "SUCCESS");
-////                        User user = userResult.data;
-////                        String imageUrl = user.profileImageUrl;
-//                        for (Tweet t : result.data) {
-//                            tweets.add(t);
-//                            Log.d("tweeeeet", "TWEET IS" + t.text);
-//                        }
-//                    }
-//                    @Override
-//                    public void failure(TwitterException exception) {
-//                        Log.d("failure", "TWEET FAILURE");
-//                    }
-//                });
-//
-//    }
 
     @Override
     public void onStart() {

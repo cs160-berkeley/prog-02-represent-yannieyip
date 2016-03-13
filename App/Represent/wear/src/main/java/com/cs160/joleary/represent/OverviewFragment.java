@@ -19,7 +19,6 @@ import android.content.Intent;
 public class OverviewFragment extends Fragment implements View.OnClickListener {
 
     ViewGroup mRootView;
-    ImageButton vEllipses;
     TextView vName;
     private static Listener mListener;
 //    private View view;
@@ -35,7 +34,6 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         vName = (TextView) view.findViewById(R.id.name);
-//            vEllipses = (ImageButton) view.findViewById(R.id.ellipses);
         view.setOnClickListener(this);
     }
 

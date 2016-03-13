@@ -22,6 +22,8 @@
         android:layout_height="wrap_content"
         android:text="Name"
         android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#880015"
         android:id="@+id/name"
         android:layout_marginTop="160dp"
         android:layout_centerHorizontal="true" />
@@ -31,7 +33,9 @@
         android:layout_height="wrap_content"
         android:text="Party"
         android:textSize="18sp"
+        android:textStyle="bold"
         android:id="@+id/party"
+        android:textColor="#206335"
         android:layout_marginTop="185dp"
         android:layout_centerHorizontal="true" />
 
@@ -39,6 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Term Ends"
+        android:textStyle="bold"
+        android:textColor="#206335"
         android:textSize="18sp"
         android:id="@+id/termEnds"
         android:layout_marginTop="210dp"
@@ -49,6 +55,7 @@
         android:layout_height="wrap_content"
         android:text="Committees Currently Serving:"
         android:textSize="18sp"
+        android:textStyle="bold"
         android:id="@+id/comLabel"
         android:layout_marginTop="250dp"
         android:layout_alignParentStart="true" />
@@ -59,13 +66,15 @@
         android:text="Committees"
         android:textSize="15sp"
         android:id="@+id/committees"
-        android:layout_marginTop="270dp"
+        android:textColor="#206335"
+        android:layout_marginTop="280dp"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bills Recently Sponsored:"
+        android:textStyle="bold"
         android:textSize="18sp"
         android:id="@+id/billLabel"
         android:layout_alignParentStart="true"
@@ -75,9 +84,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bills"
+        android:textColor="#206335"
         android:textSize="15sp"
         android:id="@+id/bills"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="390dp"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>

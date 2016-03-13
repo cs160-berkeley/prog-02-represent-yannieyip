@@ -23,7 +23,7 @@ private static final String TOAST = "/send_toast";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-//        Log.d("T", "in PhoneListenerService, got: " + messageEvent.getPath());
+        Log.d("T", "in PhoneListenerService, got: " + messageEvent.getPath());
 //        if( messageEvent.getPath().equalsIgnoreCase(TOAST) ) {
 
 //        // Value contains the String we sent over in WatchToPhoneService, "good job"

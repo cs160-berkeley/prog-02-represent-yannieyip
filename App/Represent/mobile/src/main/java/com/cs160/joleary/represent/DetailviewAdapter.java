@@ -8,19 +8,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by yannie on 3/2/16.
  */
 public class DetailviewAdapter extends ArrayAdapter<String> {
 
-    int[] pictures={};
-    String[] names={};
-    String[] parties={};
-    String[] termEnds={};
-    String comLabel;
-    String billLabel;
-    String[] committees={};
-    String[] bills={};
+    ArrayList<String> ids = new ArrayList<String>();
+    ArrayList<String> first_names = new ArrayList<String>();
+    ArrayList<String> last_names = new ArrayList<String>();
+    ArrayList<String> parties = new ArrayList<String>();
+    ArrayList<String> chambers = new ArrayList<String>();
+    ArrayList<String> emails = new ArrayList<String>();
+    ArrayList<String> websites = new ArrayList<String>();
+    ArrayList<String> term_ends = new ArrayList<String>();
+    ArrayList<String> pic_urls = new ArrayList<String>();
     Context c;
     LayoutInflater inflater;
 
@@ -28,15 +31,7 @@ public class DetailviewAdapter extends ArrayAdapter<String> {
                            String[] committees, String[] bills, int[] pictures) {
         super(context, R.layout.detail_row,names);
 
-        this.names = names;
-        this.parties = parties;
-        this.termEnds = termEnds;
-        this.comLabel = comLabel;
-        this.billLabel = billLabel;
-        this.committees = committees;
-        this.bills = bills;
-        this.pictures = pictures;
-        this.c = context;
+
     }
 
     public class RowView {
@@ -67,19 +62,13 @@ public class DetailviewAdapter extends ArrayAdapter<String> {
         rowView.bills = (TextView) convertView.findViewById(R.id.bills);
         rowView.picture = (ImageView) convertView.findViewById(R.id.picture);
 
-        rowView.name.setText(names[position]);
-        rowView.party.setText(parties[position]);
-        rowView.termEnds.setText(termEnds[position]);
-        rowView.committees.setText(committees[position]);
-        rowView.bills.setText(bills[position]);
-        rowView.picture.setImageResource(pictures[position]);
 
         return convertView;
     }
 
     @Override
     public int getCount(){
-        return names.length;
+        return 1;
     }
 
 }

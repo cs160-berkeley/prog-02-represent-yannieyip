@@ -41,56 +41,54 @@ public class GridPagerAdapter extends FragmentGridPagerAdapter {
 //                cardFragment(R.string.rep1_name, R.string.rep1_party, R.drawable.barbara_boxer),
 //                cardFragment(R.string.rep2_name, R.string.rep2_party, R.drawable.dianne_feinstein),
 //                cardFragment(R.string.rep3_name, R.string.rep3_party, R.drawable.barbara_lee)));
-//        mRows.add(new Row(
-//                cardFragment(R.string.vote, R.string.vote_result1, R.drawable.green_ellipses)));
         mRows.add(new Row(new VoteFragment()));
-        mRows.add(new Row(new VoteFragment1()));
+//        mRows.add(new Row(new VoteFragment1()));
         mDefaultBg = new ColorDrawable(R.color.white);
         mClearBg = new ColorDrawable(R.color.white);
     }
 
-    LruCache<Integer, Drawable> mRowBackgrounds = new LruCache<Integer, Drawable>(3) {
-        @Override
-        protected Drawable create(final Integer row) {
-            int resid = BG_IMAGES[row % BG_IMAGES.length];
-            new DrawableLoadingTask(mContext) {
-                @Override
-                protected void onPostExecute(Drawable result) {
-                    TransitionDrawable background = new TransitionDrawable(new Drawable[] {
-                            mDefaultBg,
-                            result
-                    });
-                    mRowBackgrounds.put(row, background);
-                    notifyRowBackgroundChanged(row);
-                    background.startTransition(TRANSITION_DURATION_MILLIS);
-                }
-            }.execute(resid);
-            return mDefaultBg;
-        }
-    };
-
-    LruCache<Point, Drawable> mPageBackgrounds = new LruCache<Point, Drawable>(3) {
-        @Override
-        protected Drawable create(final Point page) {
-            // place bugdroid as the background at row 2, column 1
-            if (page.y == 2 && page.x == 1) {
-                int resid = R.drawable.food_bg_160;
-                new DrawableLoadingTask(mContext) {
-                    @Override
-                    protected void onPostExecute(Drawable result) {
-                        TransitionDrawable background = new TransitionDrawable(new Drawable[] {
-                                mClearBg,
-                                result
-                        });
-                        mPageBackgrounds.put(page, background);
-                        notifyPageBackgroundChanged(page.y, page.x);
-                        background.startTransition(TRANSITION_DURATION_MILLIS);
-                    }
-                }.execute(resid);
-            }
-            return android.support.wearable.view.GridPagerAdapter.BACKGROUND_NONE;
-        }
-    };
+//    LruCache<Integer, Drawable> mRowBackgrounds = new LruCache<Integer, Drawable>(3) {
+//        @Override
+//        protected Drawable create(final Integer row) {
+//            int resid = BG_IMAGES[row % BG_IMAGES.length];
+//            new DrawableLoadingTask(mContext) {
+//                @Override
+//                protected void onPostExecute(Drawable result) {
+//                    TransitionDrawable background = new TransitionDrawable(new Drawable[] {
+//                            mDefaultBg,
+//                            result
+//                    });
+//                    mRowBackgrounds.put(row, background);
+//                    notifyRowBackgroundChanged(row);
+//                    background.startTransition(TRANSITION_DURATION_MILLIS);
+//                }
+//            }.execute(resid);
+//            return mDefaultBg;
+//        }
+//    };
+//
+//    LruCache<Point, Drawable> mPageBackgrounds = new LruCache<Point, Drawable>(3) {
+//        @Override
+//        protected Drawable create(final Point page) {
+//            // place bugdroid as the background at row 2, column 1
+//            if (page.y == 2 && page.x == 1) {
+//                int resid = R.drawable.food_bg_160;
+//                new DrawableLoadingTask(mContext) {
+//                    @Override
+//                    protected void onPostExecute(Drawable result) {
+//                        TransitionDrawable background = new TransitionDrawable(new Drawable[] {
+//                                mClearBg,
+//                                result
+//                        });
+//                        mPageBackgrounds.put(page, background);
+//                        notifyPageBackgroundChanged(page.y, page.x);
+//                        background.startTransition(TRANSITION_DURATION_MILLIS);
+//                    }
+//                }.execute(resid);
+//            }
+//            return android.support.wearable.view.GridPagerAdapter.BACKGROUND_NONE;
+//        }
+//    };
 
     private Fragment cardFragment(int titleRes, int textRes, int picture) {
         Resources res = mContext.getResources();
@@ -103,7 +101,7 @@ public class GridPagerAdapter extends FragmentGridPagerAdapter {
     }
 
     static final int[] BG_IMAGES = new int[] {
-            R.color.black
+            R.color.white
     };
 
     /** A convenient container for a row of fragments. */
@@ -135,15 +133,15 @@ public class GridPagerAdapter extends FragmentGridPagerAdapter {
         return adapterRow.getColumn(col);
     }
 
-    @Override
-    public Drawable getBackgroundForRow(final int row) {
-        return mRowBackgrounds.get(row);
-    }
-
-    @Override
-    public Drawable getBackgroundForPage(final int row, final int column) {
-        return mPageBackgrounds.get(new Point(column, row));
-    }
+//    @Override
+//    public Drawable getBackgroundForRow(final int row) {
+//        return mRowBackgrounds.get(row);
+//    }
+//
+//    @Override
+//    public Drawable getBackgroundForPage(final int row, final int column) {
+//        return mPageBackgrounds.get(new Point(column, row));
+//    }
 
     @Override
     public int getRowCount() {
@@ -154,21 +152,21 @@ public class GridPagerAdapter extends FragmentGridPagerAdapter {
     public int getColumnCount(int rowNum) {
         return mRows.get(rowNum).getColumnCount();
     }
-
-    class DrawableLoadingTask extends AsyncTask<Integer, Void, Drawable> {
-        private static final String TAG = "Loader";
-        private Context context;
-
-        DrawableLoadingTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected Drawable doInBackground(Integer... params) {
-            Log.d(TAG, "Loading asset 0x" + Integer.toHexString(params[0]));
-            return context.getResources().getDrawable(params[0]);
-        }
-    }
+//
+//    class DrawableLoadingTask extends AsyncTask<Integer, Void, Drawable> {
+//        private static final String TAG = "Loader";
+//        private Context context;
+//
+//        DrawableLoadingTask(Context context) {
+//            this.context = context;
+//        }
+//
+//        @Override
+//        protected Drawable doInBackground(Integer... params) {
+//            Log.d(TAG, "Loading asset 0x" + Integer.toHexString(params[0]));
+//            return context.getResources().getDrawable(params[0]);
+//        }
+//    }
 }
 
 

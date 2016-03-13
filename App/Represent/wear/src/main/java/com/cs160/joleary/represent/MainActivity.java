@@ -10,9 +10,18 @@ import android.view.WindowInsets;
 import android.support.wearable.view.GridViewPager;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
 
     private TextView name;
+    ArrayList<String> ids = new ArrayList<String>();
+    ArrayList<String> first_names = new ArrayList<String>();
+    ArrayList<String> last_names = new ArrayList<String>();
+    ArrayList<String> parties = new ArrayList<String>();
+    ArrayList<String> chambers = new ArrayList<String>();
+    ArrayList<String> term_ends = new ArrayList<String>();
+    ArrayList<String> pic_urls = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +37,14 @@ public class MainActivity extends Activity {
         Bundle extras = intent.getExtras();
 
         if (extras != null) {
-            String catName = extras.getString("CAT_NAME");
-            Log.d("In wear listener", "GOT CATNAME:" + catName);
+//            String catName = extras.getString("CAT_NAME");
+            String ya = extras.getString("test");
+            Log.d("LALALALLAALYESAAAAHHH", ya);
+//            Log.d("In wear listener", "GOT CATNAME:" + catName);
+        } else {
+            Log.d("TEXTNULLLLLL?", "EXTRA NULL WHATTT");
         }
+
         pager.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
