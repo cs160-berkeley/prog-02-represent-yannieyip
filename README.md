@@ -1,6 +1,6 @@
 # PROG 02: Represent!
 
-Briefly describe your app here.
+The application allows users to look up district representatives through either current location or a zip code. Upon selecting a location, users first see an overview of all house and senate representatives in that district, along with their picture, name, party, chamber, emails, website, and latest tweet. Users can click on the row which the representative belong and view more detail information of the representative. The detail view shows the representative’s photo, name, party, chamber, term end date, committee they are serving, and bills they have recently sponsored.
 
 ## Authors
 
