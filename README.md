@@ -13,10 +13,10 @@ See Represent! (https://goo.gl/photos/kTJtaA1yaUCC4DXN8)
 ## Screenshots
 
 <img src="screenshots/mobile_screen_1.png" height="400" alt="Screenshot"/>
-<img src="screenshots/mobile_screen_2" height="400" alt="Screenshot"/>
-<img src="screenshots/mobile_screen_3" height="400" alt="Screenshot"/>
-<img src="screenshots/wear_screen_1" height="400" alt="Screenshot"/>
-<img src="screenshots/wear_screen_2" height="400" alt="Screenshot"/>
+<img src="screenshots/mobile_screen_2.png" height="400" alt="Screenshot"/>
+<img src="screenshots/mobile_screen_3.png" height="400" alt="Screenshot"/>
+<img src="screenshots/wear_screen_1.png" height="400" alt="Screenshot"/>
+<img src="screenshots/wear_screen_2.png" height="400" alt="Screenshot"/>
 
 ## Acknowledgments
 
