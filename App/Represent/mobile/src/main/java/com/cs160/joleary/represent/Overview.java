@@ -68,7 +68,7 @@ public class Overview extends Activity {
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), first_names.get(position), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), first_names.get(position), Toast.LENGTH_SHORT).show();
                 getCommittees(position);
             }
         });
