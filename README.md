@@ -15,8 +15,8 @@ See Represent! (https://goo.gl/photos/kTJtaA1yaUCC4DXN8)
 <img src="screenshots/mobile_screen_1.png" height="400" alt="Screenshot"/>
 <img src="screenshots/mobile_screen_2.png" height="400" alt="Screenshot"/>
 <img src="screenshots/mobile_screen_3.png" height="400" alt="Screenshot"/>
-<img src="screenshots/wear_screen_1.png" height="400" alt="Screenshot"/>
-<img src="screenshots/wear_screen_2.png" height="400" alt="Screenshot"/>
+<img src="screenshots/wear_screen_1.png" height="300" alt="Screenshot"/>
+<img src="screenshots/wear_screen_2.png" height="300" alt="Screenshot"/>
 
 ## Acknowledgments
 
